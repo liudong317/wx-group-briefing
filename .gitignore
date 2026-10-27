@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.pytest_cache/
+.ruff_cache/
+.venv/
+__pycache__/
+*.py[cod]
+config.toml
+dist/
+logs/
+reports/
+tmp/
+# 参考截图可能含他人群聊，不入库
+d4ef392b70a35111db6d38ab838f4e52.jpg

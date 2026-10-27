@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wechat-group-daily"
+version = "0.4.0"
+description = "Generate Markdown and compact PDF daily reports from local WeChat groups on macOS and Windows"
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+  "click>=8.1,<9",
+  "keyring>=25.7,<26",
+  "reportlab>=4.4,<5",
+  # 上游 README 写了 pip 安装，但 0.2.4 尚未发布到 PyPI；固定 Git commit 保证可复现。
+  "wechat-cli",
+]
+
+[tool.uv.sources]
+wechat-cli = { path = "../wechat-cli" }
+
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+wechat-daily = "wechat_daily.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wechat_daily"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

@@ -1,0 +1,48 @@
+[wechat]
+# wechat-cli 会由 uv 安装在本项目的 .venv/bin 里。
+command = "wechat-cli"
+# 可填写多个群；程序会为每个群分别生成 Markdown + PDF。
+groups = ["请改成你的微信群名", "需要多个群时继续添加"]
+page_size = 500
+max_messages_per_group = 5000
+command_timeout_seconds = 120
+
+[ai]
+# 推荐方案：标准 OpenAI 兼容中转。这里不硬编码接口，避免后台地址变化后教程失效。
+provider = "openai-compatible"
+base_url = "https://xuedingtoken1.com/v1"
+model = "claude-opus-4-8"
+# API Key 不要写进本文件；运行 wechat-daily set-api-key 存入系统凭据库。
+api_key_env = "WECHAT_DAILY_API_KEY"
+api_key_service = "wechat-group-daily-xuedingtoken"
+api_key_account = ""
+# provider = "codex" 时才会使用 command；详见 docs/薛定Token接入教程.md。
+command = "codex"
+command_timeout_seconds = 600
+
+[summary]
+# 聊天过长时自动分块总结，再合并成最终日报。
+chunk_chars = 18000
+language = "简体中文"
+custom_instructions = "重点保留项目进展、真实结论、待办、负责人、截止时间和群友分享的资源。"
+
+[privacy]
+# 发送给 AI 前在内存中脱敏；本地微信数据库不会被修改。
+redact_phone = true
+redact_email = true
+redact_id_card = true
+redact_bank_card = true
+
+[report]
+output_dir = "reports"
+filename = "{date}_{group}_微信群日报.md"
+save_raw_transcript = false
+generate_pdf = false
+generate_image = true
+# 排版器会自动压缩字号，尽量控制在这个页数内。
+pdf_max_pages = 2
+
+[schedule]
+label = "com.local.wechat-group-daily"
+hour = 22
+minute = 0
